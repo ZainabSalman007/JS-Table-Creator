@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Math Table Generator</title>
+  <style>
+    body {
+      background-color: lightgoldenrodyellow;
+      font-family: Arial, sans-serif;
+    }
+    
+    #container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    
+    h1, h2 {
+      text-align: center;
+    }
+    
+    label {
+      font-weight: bold;
+    }
+    
+    input[type="number"], button {
+      display: block;
+      margin-bottom: 10px;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    
+    th, td {
+      padding: 8px;
+      text-align: center;
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <h1>Math Table Generator</h1>
+    <div id="tablesForm">
+      <label for="numTables">Number of Tables:</label>
+      <input type="number" id="numTables" min="1" required>
+      <button onclick="createTables()">Generate Tables</button>
+    </div>
+  </div>
+
+  <script>
+    function createTables() {
+      var numTables = parseInt(document.getElementById('numTables').value);
+
+      var formContainer = document.getElementById('tablesForm');
+      formContainer.innerHTML = '';
+
+      for (var i = 1; i <= numTables; i++) {
+        var tableContainer = document.createElement('div');
+
+        var tableNumberInput = document.createElement('input');
+        tableNumberInput.type = 'number';
+        tableNumberInput.placeholder = 'Table Number ' + i;
+        tableContainer.appendChild(tableNumberInput);
+
+        var tableUpToInput = document.createElement('input');
+        tableUpToInput.type = 'number';
+        tableUpToInput.placeholder = 'Table Up To ' + i;
+        tableContainer.appendChild(tableUpToInput);
+
+        formContainer.appendChild(tableContainer);
+      }
+
+      var generateButton = document.createElement('button');
+      generateButton.textContent = 'Generate Tables';
+      generateButton.onclick = generateTables;
+      formContainer.appendChild(generateButton);
+    }
+
+    function generateTables() {
+      var tableContainers = document.querySelectorAll('#tablesForm > div');
+      document.getElementById('tablesForm').innerHTML = '';
+
+      tableContainers.forEach(function(container) {
+        var tableNumber = parseInt(container.children[0].value);
+        var tableUpTo = parseInt(container.children[1].value);
+
+        var table = document.createElement('table');
+
+        var headerRow = document.createElement('tr');
+        var headerCell = document.createElement('th');
+        headerCell.textContent = 'Table of ' + tableNumber + ' (Up to ' + tableUpTo + ')';
+        headerCell.setAttribute('colspan', '3');
+        headerRow.appendChild(headerCell);
+        table.appendChild(headerRow);
+
+        for (var j = 1; j <= tableUpTo; j++) {
+          var row = document.createElement('tr');
+          var cell1 = document.createElement('td');
+          cell1.textContent = tableNumber + ' x ' + j;
+          var cell2 = document.createElement('td');
+          cell2.textContent = '=';
+          var cell3 = document.createElement('td');
+          cell3.textContent = tableNumber * j;
+          row.appendChild(cell1);
+          row.appendChild(cell2);
+          row.appendChild(cell3);
+          table.appendChild(row);
+        }
+
+        document.getElementById('container').appendChild(table);
+      });
+    }
+  </script>
+</body>
+</html>
